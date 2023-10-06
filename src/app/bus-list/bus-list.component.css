@@ -1,0 +1,29 @@
+@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css");
+
+.card-title-bus {
+  color: #398ae0;
+}
+
+.card-title-time {
+  color: #41d864;
+}
+
+.card-title-route {
+  color: #e74949;
+}
+
+.card:hover {
+  transform: scale(1.05);
+  transition: transform 0.3s ease;
+}
+
+.card-title,
+.heading,
+.btn {
+  font-family: "Quicksand", sans-serif;
+  font-weight: 550;
+}
+
+.card-text {
+  font-family: "Quicksand", sans-serif;
+}

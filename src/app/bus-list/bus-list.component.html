@@ -1,0 +1,44 @@
+<div class="container mt-5">
+  <h2>Available Buses</h2>
+  <div *ngFor="let bus of buses" class="card mb-3">
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-4">
+          <h5 class="card-title card-title-bus">
+            <i class="fas fa-bus"></i> Bus Number: {{ bus?.busNo }}
+          </h5>
+          <p class="card-text">
+            <b class="heading"> Bus Type: </b> {{ bus?.type }}
+          </p>
+          <p class="card-text">
+            <b class="heading"> Seats Left:</b> {{ bus?.seatsLeft }}
+          </p>
+        </div>
+        <div class="col-md-4">
+          <h5 class="card-title card-title-time">
+            <i class="far fa-clock"></i> Arrival & Departure
+          </h5>
+          <p class="card-text">
+            <b class="heading">Departure Time:</b> {{ bus?.departTime }}
+          </p>
+          <p class="card-text">
+            <b class="heading">Arrival Time:</b> {{ bus?.arriveTime }}
+          </p>
+        </div>
+        <div class="col-md-4">
+          <h5 class="card-title card-title-route">
+            <i class="fas fa-map-marker-alt"></i> Route Details
+          </h5>
+          <p class="card-text"><b class="heading">From:</b> {{ bus?.from }}</p>
+          <p class="card-text"><b class="heading">To:</b> {{ bus?.to }}</p>
+          <p class="card-text">
+            <b class="heading">Minimum Price:</b> {{ bus?.minPrice }}
+          </p>
+        </div>
+      </div>
+      <button class="btn btn-success mt-3" (click)="viewSeats(bus.busNo)">
+        View Seats
+      </button>
+    </div>
+  </div>
+</div>

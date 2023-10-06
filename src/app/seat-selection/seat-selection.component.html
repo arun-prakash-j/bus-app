@@ -1,0 +1,136 @@
+<button class="btn btn-primary mb-4" (click)="backToBusesPage()">Back</button>
+<div class="container">
+  <div class="col-xs-4">
+    <div class="container">
+      <!-- Lower Deck Seats -->
+      <svg width="400" height="600">
+        <text
+          x="240"
+          y="12"
+          font-size="16"
+          font-weight="bold"
+          text-anchor="middle"
+        >
+          LOWER DECK
+        </text>
+        <g transform="rotate(90, 200, 200)">
+          <rect
+            x="20"
+            y="55"
+            width="550"
+            height="220"
+            rx="20"
+            ry="20"
+            fill="#f2f2f2"
+          />
+
+          <g id="lowerDeckSeats">
+            <ng-container *ngFor="let seat of lowerDeckSeats">
+              <rect
+                [attr.x]="seat.x"
+                [attr.y]="seat.y"
+                [attr.width]="seat.width"
+                [attr.height]="seat.height"
+                rx="5"
+                ry="5"
+                [attr.fill]="getSeatColor(seat)"
+                (click)="selectSeat(seat)"
+              />
+              <text
+                [attr.x]="seat.x + 10"
+                [attr.y]="seat.y + 20"
+                font-size="12"
+                font-weight="bold"
+                fill="black"
+              >
+                {{ seat.id }}
+              </text>
+            </ng-container>
+          </g>
+        </g>
+      </svg>
+
+      <!-- Upper Deck Seats -->
+      <svg width="400" height="600">
+        <text
+          x="240"
+          y="12"
+          font-size="16"
+          font-weight="bold"
+          text-anchor="middle"
+        >
+          UPPER DECK
+        </text>
+        <g transform="rotate(90,200, 200)">
+          <rect
+            x="20"
+            y="55"
+            width="550"
+            height="220"
+            rx="20"
+            ry="20"
+            fill="#f2f2f2"
+          />
+          <g id="upperDeckSeats">
+            <ng-container *ngFor="let seat of upperDeckSeats">
+              <rect
+                [attr.x]="seat.x"
+                [attr.y]="seat.y"
+                [attr.width]="seat.width"
+                [attr.height]="seat.height"
+                rx="5"
+                ry="5"
+                [attr.fill]="getSeatColor(seat)"
+                (click)="selectSeat(seat)"
+              />
+              <text
+                [attr.x]="seat.x + 15"
+                [attr.y]="seat.y + 20"
+                font-size="12"
+                font-weight="bold"
+                fill="black"
+              >
+                {{ seat.id }}
+              </text>
+            </ng-container>
+          </g>
+        </g>
+      </svg>
+    </div>
+  </div>
+
+  <div class="col-md-5 position-relative" style="height: 600px">
+    <!-- Selected Seats and Total Price -->
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">Selected Seats</h4>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Seat Number</th>
+              <th>Seat Type</th>
+              <th>Seat Price</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let seat of selectedSeatIds">
+              <td>{{ seat.id }}</td>
+              <td>{{ seat.type }}</td>
+              <td>{{ seat.price }}</td>
+            </tr>
+          </tbody>
+        </table>
+        <h4 class="card-title">Total Price</h4>
+        <p class="lead">{{ totalPrice }}</p>
+      </div>
+    </div>
+
+    <button
+      class="btn btn-primary mt-2"
+      (click)="proceedToPassengerInfo()"
+      [disabled]="noSeatsSelected"
+    >
+      Proceed
+    </button>
+  </div>
+</div>

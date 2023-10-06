@@ -1,0 +1,143 @@
+<div class="container mt-4">
+  <button class="btn btn-primary mb-4" (click)="backToSeatSelectionPage()">
+    Back
+  </button>
+
+  <div class="card">
+    <div class="card-body">
+      <h2 class="card-title" style="font-size: 18px">Passenger Information</h2>
+
+      <form
+        *ngFor="let formGroup of passengerForms; let i = index"
+        [formGroup]="formGroup"
+        class="mb-4"
+      >
+        <h3 class="mb-3" style="font-size: 16px">
+          Seat {{ selectedSeats[i].id }}
+        </h3>
+
+        <div class="row mb-3">
+          <div class="col">
+            <label for="name{{ i }}" class="form-label" style="font-size: 14px"
+              >Name</label
+            >
+            <input
+              type="text"
+              class="form-control form-control-sm"
+              id="name{{ i }}"
+              formControlName="name"
+              required
+            />
+            <div
+              *ngIf="
+                formGroup.get('name')?.hasError('required') &&
+                formGroup.get('name')?.touched
+              "
+              class="text-danger"
+            >
+              Name is required.
+            </div>
+            <div
+              *ngIf="
+                formGroup.get('name')?.hasError('minlength') &&
+                formGroup.get('name')?.touched
+              "
+              class="text-danger"
+            >
+              Name must be at least 3 characters long.
+            </div>
+            <div
+              *ngIf="
+                formGroup.get('name')?.hasError('pattern') &&
+                formGroup.get('name')?.touched
+              "
+              class="text-danger"
+            >
+              Name can only contain letters and spaces.
+            </div>
+          </div>
+
+          <div class="col">
+            <label for="age{{ i }}" class="form-label" style="font-size: 14px"
+              >Age</label
+            >
+            <input
+              type="number"
+              class="form-control form-control-sm"
+              id="age{{ i }}"
+              formControlName="age"
+              required
+            />
+            <div
+              *ngIf="
+                formGroup.get('age')?.hasError('required') &&
+                formGroup.get('age')?.touched
+              "
+              class="text-danger"
+            >
+              Age is required.
+            </div>
+            <div
+              *ngIf="
+                formGroup.get('age')?.hasError('min') &&
+                formGroup.get('age')?.touched
+              "
+              class="text-danger"
+            >
+              Age must be at least 5.
+            </div>
+          </div>
+
+          <div class="col">
+            <label
+              for="gender{{ i }}"
+              class="form-label"
+              style="font-size: 14px"
+              >Gender</label
+            >
+            <select
+              class="form-select form-select-sm"
+              id="gender{{ i }}"
+              formControlName="gender"
+              required
+              [disabled]="selectedSeats[i].gender === 'female'"
+            >
+              <option value="" disabled selected>Select gender</option>
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+            </select>
+            <div
+              *ngIf="
+                formGroup.get('gender')?.hasError('required') &&
+                formGroup.get('gender')?.touched
+              "
+              class="text-danger"
+            >
+              Gender is required.
+            </div>
+          </div>
+        </div>
+      </form>
+
+      <button
+        class="btn btn-primary"
+        (click)="proceedToPayout()"
+        [disabled]="!areAllDetailsFilled()"
+      >
+        Proceed to Payout
+      </button>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="showConfirmationDialog" class="confirmation-dialog">
+  <div class="confirmation-content">
+    <p>
+      Are you sure to continue?
+      <br />
+      Note: Once you press YES, you cannot edit the data you entered.
+    </p>
+    <button class="btn btn-primary" (click)="confirm()">Yes</button>
+    <button class="btn btn-secondary" (click)="cancel()">No</button>
+  </div>
+</div>

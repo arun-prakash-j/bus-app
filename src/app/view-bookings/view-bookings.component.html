@@ -1,0 +1,60 @@
+<!-- <div class="container">
+  <button class="btn btn-primary my-4" (click)="backToAdminInterface()">
+    Back
+  </button>
+
+  <div *ngFor="let busId of getBusIds()">
+    <h2 class="my-3">Booked Seats for Bus {{ busId }}</h2>
+    <table class="table table-bordered table-striped">
+      <thead>
+        <tr>
+          <th>Seat Number</th>
+          <th>Passenger Name</th>
+          <th>Gender</th>
+          <th>Age</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let seat of bookedSeatsByBus[busId]">
+          <td>{{ seat.id }}</td>
+          <td>{{ seat.passengerName }}</td>
+          <td>{{ seat.gender }}</td>
+          <td>{{ seat.passengerAge }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div> -->
+
+<div class="container">
+  <button class="btn btn-primary my-4" (click)="backToAdminInterface()">
+    Back
+  </button>
+
+  <div *ngFor="let busId of getBusIds()">
+    <h2 class="my-3">Booked Seats for Bus {{ busId }}</h2>
+    <table class="table table-bordered table-striped">
+      <thead>
+        <tr>
+          <th>Seat Number</th>
+          <th>Passenger Name</th>
+          <th>Gender</th>
+          <th>Age</th>
+          <th>Cancel</th> <!-- Add a Cancel column -->
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let seat of bookedSeatsByBus[busId]">
+          <td>{{ seat.id }}</td>
+          <td>{{ seat.passengerName }}</td>
+          <td>{{ seat.gender }}</td>
+          <td>{{ seat.passengerAge }}</td>
+          <td>
+            <!-- Add a Cancel button that calls a cancelSeat function -->
+            <button class="btn btn-danger" (click)="cancelSeat(busId, seat.id , seat.deck)">Cancel</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

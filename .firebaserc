@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "busticketbooking-faf5d": {
+      "hosting": {
+        "bus-ticket-booking": [
+          "busticketbooking-faf5d"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "busticketbooking-faf5d"
+  }
+}
