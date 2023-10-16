@@ -1,3 +1,5 @@
+// import { Component, OnInit } from '@angular/core';
+// import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -45,16 +47,17 @@ export class CustomerLoginComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    if (localStorage.getItem('user') !== null) this.isSignedIn = true;
-    else this.isSignedIn = false;
+    this.firebaseService.isAuthenticated().subscribe((authenticated) => {
+      this.isSignedIn = authenticated;
+    });
   }
+
   async onSignin() {
     const { email, password } = this.loginForm.value;
 
     await this.firebaseService.signin(email, password);
-    if (this.firebaseService.isLoggedIn) {
+    if (this.isSignedIn) {
       this.loginForm.reset();
-      this.isSignedIn = true;
       this.router.navigate(['/buses']);
     }
   }

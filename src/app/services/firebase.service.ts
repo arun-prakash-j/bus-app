@@ -1,30 +1,20 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { map, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class FirebaseService {
-  isLoggedIn = false;
   isSignedUp = false;
 
-  constructor(public firebaseAuth: AngularFireAuth) {
-    firebaseAuth.authState.subscribe((user) => {
-      this.isLoggedIn = !!user;
-    });
+  constructor(public firebaseAuth: AngularFireAuth) {}
+
+  async signin(email: string, password: string): Promise<void> {
+    await this.firebaseAuth.signInWithEmailAndPassword(email, password);
   }
 
-  async signin(email: string, password: string) {
-    await this.firebaseAuth
-      .signInWithEmailAndPassword(email, password)
-      .then(() => {
-        this.isLoggedIn = true;
-
-        localStorage.setItem('isLoggedIn', 'true');
-      });
-  }
-
-  async signup(email: string, password: string) {
+  async signup(email: string, password: string): Promise<void> {
     await this.firebaseAuth
       .createUserWithEmailAndPassword(email, password)
       .then(() => {
@@ -32,14 +22,11 @@ export class FirebaseService {
       });
   }
 
-  logout() {
+  logout(): void {
     this.firebaseAuth.signOut();
-    this.isLoggedIn = false;
-
-    localStorage.setItem('isLoggedIn', 'false');
   }
 
-  isAuthenticated(): boolean {
-    return this.isLoggedIn;
+  isAuthenticated(): Observable<boolean> {
+    return this.firebaseAuth.authState.pipe(map((user) => user !== null));
   }
 }
