@@ -6,6 +6,7 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
 })
 export class FirebaseService {
   isLoggedIn = false;
+  isSignedUp = false;
 
   constructor(public firebaseAuth: AngularFireAuth) {
     firebaseAuth.authState.subscribe((user) => {
@@ -27,9 +28,7 @@ export class FirebaseService {
     await this.firebaseAuth
       .createUserWithEmailAndPassword(email, password)
       .then(() => {
-        this.isLoggedIn = true;
-
-        localStorage.setItem('isLoggedIn', 'true');
+        this.isSignedUp = true;
       });
   }
 
