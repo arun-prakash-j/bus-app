@@ -100,10 +100,12 @@
   </div>
 
   <div class="col-md-5 position-relative" style="height: 600px">
-    <!-- Selected Seats and Total Price -->
     <div class="card">
       <div class="card-body">
         <h4 class="card-title">Selected Seats</h4>
+        <div *ngIf="cannotSelect" class="text-danger">
+          *Cannot select more than 5 seats at a time
+        </div>
         <table class="table">
           <thead>
             <tr>

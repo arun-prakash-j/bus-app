@@ -17,6 +17,7 @@ export class SeatSelectionComponent implements OnInit {
   upperDeckSeats: Seat[] = [];
 
   noSeatsSelected: boolean = true;
+  cannotSelect = false;
 
   totalPrice: number = 0;
 
@@ -51,17 +52,12 @@ export class SeatSelectionComponent implements OnInit {
     if (!seat.isBooked) {
       if (this.selectedSeatIds.length < 5 || seat.isSelected) {
         seat.isSelected = !seat.isSelected;
-
         if (seat.isSelected) {
           this.seatService.addSelectedSeatNumber(seat);
-
           if (seat.deck === 'lower') {
             if (seat.id <= 20) {
-              // Check if it's an even or odd seat number
               if (seat.id % 2 === 0) {
-                // Find the adjacent seat with an odd number
                 const adjacentSeat = this.findSeat(seat.id - 1);
-                console.log('adjacent even', adjacentSeat);
                 if (adjacentSeat && adjacentSeat.gender === 'female') {
                   if (seat) {
                     seat.gender = 'female';
@@ -70,41 +66,30 @@ export class SeatSelectionComponent implements OnInit {
               }
 
               if (seat.id % 2 !== 0) {
-                // Find the adjacent seat with an even number
                 const adjacentSeat = this.findSeat(seat.id + 1);
-                console.log('adjacent odd', adjacentSeat);
                 if (adjacentSeat && adjacentSeat.gender === 'female') {
                   if (seat) {
                     seat.gender = 'female';
                   }
-                  console.log('passing seat', seat);
                 }
               }
             }
           } else {
-            console.log('Inside Upper');
             if (seat.id <= 35) {
-              // Check if it's an even or odd seat number
               if (seat.id % 2 === 0) {
-                // Find the adjacent seat with an odd number
                 const adjacentSeat = this.findSeat(seat.id + 1);
-                console.log('adjacent even', adjacentSeat);
                 if (adjacentSeat && adjacentSeat.gender === 'female') {
                   if (seat) {
                     seat.gender = 'female';
                   }
                 }
               }
-
               if (seat.id % 2 !== 0) {
-                // Find the adjacent seat with an even number
                 const adjacentSeat = this.findSeat(seat.id - 1);
-                console.log('adjacent odd', adjacentSeat);
                 if (adjacentSeat && adjacentSeat.gender === 'female') {
                   if (seat) {
                     seat.gender = 'female';
                   }
-                  console.log('passing seat', seat);
                 }
               }
             }
@@ -112,14 +97,17 @@ export class SeatSelectionComponent implements OnInit {
         } else {
           this.seatService.removeSelectedSeatNumber(seat);
         }
-
         this.selectedSeatIds = this.seatService.getSelectedSeatNumbers();
-
         this.calculateTotal();
+        this.cannotSelect = false;
       } else {
-        console.log('Maximum seat limit (5) reached');
+        this.cannotSelect = true;
+        setTimeout(() => {
+          this.cannotSelect = false;
+        }, 2000);
       }
     }
+
     this.noSeatsSelected = this.selectedSeatIds.length === 0;
   }
 
@@ -142,54 +130,16 @@ export class SeatSelectionComponent implements OnInit {
     return seat ? seat.isBooked : false;
   }
 
-  // 1
-  // isAdjacentSeatBooked(seat: Seat, offset: number): boolean {
-  //   if (!seat || !seat.id) {
-  //     return false;
-  //   }
-
-  //   // Determine the maximum seat number in a row (e.g., 2 for your example layout)
-  //   const seatsPerRow = 2;
-
-  //   // Calculate the row number based on the seat number and seats per row
-  //   const currentRow = Math.floor(seat.id / seatsPerRow);
-
-  //   // Calculate adjacent seat numbers in the same row
-  //   const adjacentSeatLeft = seat.id - offset;
-  //   const adjacentSeatRight = seat.id + offset;
-
-  //   // Check if adjacent seats are booked by females
-  //   const isAdjacentLeftFemale =
-  //     this.isSeatBooked(this.findSeat(adjacentSeatLeft)) &&
-  //     this.getSeatGender(adjacentSeatLeft) === 'female';
-  //   const isAdjacentRightFemale =
-  //     this.isSeatBooked(this.findSeat(adjacentSeatRight)) &&
-  //     this.getSeatGender(adjacentSeatRight) === 'female';
-
-  //   // If the adjacent seats are booked by females, border the seat
-  //   if (seat.gender === 'male') {
-  //     return isAdjacentLeftFemale || isAdjacentRightFemale;
-  //   }
-
-  //   return false;
-  // }
-
   isAdjacentSeatBooked(seat: Seat, offset: number): boolean {
     if (!seat || !seat.id || !seat.gender) {
       return false;
     }
 
-    // Determine the maximum seat number in a column (e.g., 2 for your example layout)
     const seatsPerColumn = 2;
 
-    // Calculate the column number based on the seat number and seats per column
-    const currentColumn = seat.id % seatsPerColumn;
-
-    // Calculate adjacent seat numbers in the same column
     const adjacentSeatAbove = seat.id - seatsPerColumn * offset;
     const adjacentSeatBelow = seat.id + seatsPerColumn * offset;
 
-    // Check if adjacent seats are booked by females
     const isAdjacentAboveFemale =
       this.isSeatBooked(this.findSeat(adjacentSeatAbove)) &&
       this.getSeatGender(adjacentSeatAbove) === 'female';
@@ -197,7 +147,6 @@ export class SeatSelectionComponent implements OnInit {
       this.isSeatBooked(this.findSeat(adjacentSeatBelow)) &&
       this.getSeatGender(adjacentSeatBelow) === 'female';
 
-    // If the adjacent seats in the same column are booked by females, border the seat
     if (
       seat.gender === 'male' &&
       (isAdjacentAboveFemale || isAdjacentBelowFemale)
@@ -233,7 +182,7 @@ export class SeatSelectionComponent implements OnInit {
   }
 
   backToBusesPage(): void {
-    console.log('inside seat selection');
+    this.seatService.clearSelectedSeatsInLocalStorage();
     this.router.navigate(['../../'], { relativeTo: this.route });
   }
 }

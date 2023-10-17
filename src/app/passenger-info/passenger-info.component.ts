@@ -1,5 +1,3 @@
-// passenger-info.component.ts
-
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -38,7 +36,7 @@ export class PassengerInfoComponent implements OnInit {
               Validators.pattern(/^[A-Za-z\s]+$/),
             ],
           ],
-          age: ['', [Validators.required, Validators.min(5)]],
+          age: ['', [Validators.required, Validators.min(5), Validators.max(125)]],
           gender: [
             seat.gender === 'female' ? 'female' : '',
             Validators.required,
@@ -52,27 +50,6 @@ export class PassengerInfoComponent implements OnInit {
         this.passengerForms.push(formGroup);
       });
     }
-
-    // console.log('Selected Seats:', this.selectedSeats);
-    // console.log('Passenger Forms:', this.passengerForms);
-
-    // if (!this.selectedSeats) {
-    //   this.selectedSeats = []; // Initialize to an empty array if undefined
-    // }
-    // this.passengerForms = this.selectedSeats.map((seat) =>
-    //   this.fb.group({
-    //     name: [
-    //       '',
-    //       [
-    //         Validators.required,
-    //         Validators.minLength(3),
-    //         Validators.pattern(/^[A-Za-z\s]+$/),
-    //       ],
-    //     ],
-    //     age: ['', [Validators.required, Validators.min(5)]],
-    //     gender: [seat.gender, { disabled: seat.gender === 'female' }],
-    //   })
-    // );
   }
 
   areAllDetailsFilled(): boolean {
@@ -80,7 +57,6 @@ export class PassengerInfoComponent implements OnInit {
   }
 
   backToSeatSelectionPage(): void {
-    console.log('inside pas info');
     this.seatService.clearSelectedSeatsInLocalStorage();
     this.router.navigate(['../'], { relativeTo: this.route });
   }
@@ -92,10 +68,8 @@ export class PassengerInfoComponent implements OnInit {
   }
 
   confirm(): void {
-    // Hide the confirmation dialog
     this.showConfirmationDialog = false;
 
-    // Perform your routing logic here
     const userData = this.selectedSeats.map((seat, i) => {
       return {
         seatId: seat.id,
@@ -105,16 +79,12 @@ export class PassengerInfoComponent implements OnInit {
       };
     });
 
-    console.log('Psss', userData);
-
     this.router.navigate(['/booking-summary'], {
       state: { userData },
     });
   }
 
-  // Add a method to cancel the action
   cancel(): void {
-    // Hide the confirmation dialog
     this.showConfirmationDialog = false;
   }
 }

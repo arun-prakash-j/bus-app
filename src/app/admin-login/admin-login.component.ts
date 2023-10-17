@@ -11,6 +11,8 @@ import { FirebaseService } from '../services/firebase.service';
 export class AdminLoginComponent implements OnInit {
   isSignedIn = false;
 
+  nonAdmin = false;
+
   loginError: string | null = null;
 
   loginForm: FormGroup = this.fb.group({
@@ -44,10 +46,11 @@ export class AdminLoginComponent implements OnInit {
     if (email === 'admin@onebus.in') {
       await this.firebaseService.signin(email, password);
       if (this.isSignedIn) {
-        console.log('Signed In', this.isSignedIn);
         this.loginForm.reset();
         this.router.navigate(['/admin-interface']);
       }
+    } else {
+      this.nonAdmin = !this.nonAdmin;
     }
   }
 }

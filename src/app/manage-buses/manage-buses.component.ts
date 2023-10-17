@@ -25,8 +25,6 @@ export class ManageBusesComponent {
       .object('/Bus Details')
       .valueChanges()
       .subscribe((buses: any) => {
-        console.log('Fetched buses:', buses);
-
         if (buses) {
           this.buses = Object.keys(buses).map((key) => {
             const bus = buses[key];
@@ -42,8 +40,6 @@ export class ManageBusesComponent {
               type: bus['Type'],
             };
           });
-        } else {
-          console.error('No data found in "Bus Details"');
         }
       });
   }
@@ -55,10 +51,11 @@ export class ManageBusesComponent {
       typeof bus['ArriveTime'] === 'string' &&
       typeof bus['DepartTime'] === 'string' &&
       typeof bus['From'] === 'string' &&
-      typeof bus['To'] === 'string' &&
-      typeof bus['MinPrice'] === 'number' &&
-      typeof bus['SeatsLeft'] === 'number' &&
-      typeof bus['Type'] === 'string'
+      typeof bus['To'] === 'string' 
+      // &&
+      // typeof bus['MinPrice'] === 'number' &&
+      // typeof bus['SeatsLeft'] === 'number' &&
+      // typeof bus['Type'] === 'string'
     );
   }
 
@@ -85,61 +82,49 @@ export class ManageBusesComponent {
         .object(`/Bus Details/${busId}`)
         .update(updatedBusData)
         .then(() => {
-          console.log('Bus details updated successfully');
           this.cancelEdit();
-        })
-        .catch((error) => {
-          console.error('Error updating bus details:', error);
         });
-    } else {
-      console.error('Invalid bus data or busId');
     }
   }
 
   addBus() {
-    // Validate that all required fields are filled
     if (
       !this.newBus.busNo ||
       !this.newBus.arriveTime ||
       !this.newBus.departTime ||
       !this.newBus.from ||
-      !this.newBus.to ||
-      !this.newBus.minPrice ||
-      !this.newBus.seatsLeft ||
-      !this.newBus.type
+      !this.newBus.to
+      // ||
+      // !this.newBus.minPrice ||
+      // !this.newBus.seatsLeft ||
+      // !this.newBus.type
     ) {
-      console.error('Please fill in all required fields.');
       return;
     }
 
-    
     const nextKey = this.calculateNextKey();
 
-    
     const newBusData = {
       BusNo: this.newBus.busNo,
       ArriveTime: this.newBus.arriveTime,
       DepartTime: this.newBus.departTime,
       From: this.newBus.from,
       To: this.newBus.to,
-      MinPrice: this.newBus.minPrice,
-      SeatsLeft: this.newBus.seatsLeft,
-      Type: this.newBus.type,
+      MinPrice: 700,
+      // this.newBus.minPrice
+      SeatsLeft: 40,
+      // this.newBus.seatsLeft
+      Type: 'AC Seater/Sleeper 1+2',
+      // this.newBus.type
     };
 
     this.database
       .object(`/Bus Details/${nextKey}`)
       .update(newBusData)
       .then(() => {
-        console.log('Bus details added successfully');
-
         this.createSeatLayout(this.newBus.busNo);
-
         this.showAddForm = false;
         this.newBus = {};
-      })
-      .catch((error) => {
-        console.error('Error adding bus details:', error);
       });
   }
 
@@ -154,7 +139,6 @@ export class ManageBusesComponent {
 
   deleteBus(bus: any) {
     if (!bus || !bus.busId) {
-      console.error('Invalid bus data or busId');
       this.cancelDelete();
       return;
     }
@@ -165,20 +149,10 @@ export class ManageBusesComponent {
       .object(`/Bus Details/${busId}`)
       .remove()
       .then(() => {
-        console.log('Bus deleted successfully');
         this.cancelDelete();
-
         this.buses = this.buses.filter((b) => b.busId !== busId);
 
-        this.database
-          .object(`/Seats/${bus.busNo}`)
-          .remove()
-          .then(() => {
-            console.log('Seat layout deleted successfully for bus:', bus.busNo);
-          })
-          .catch((error) => {
-            console.error('Error deleting seat layout:', error);
-          });
+        this.database.object(`/Seats/${bus.busNo}`).remove();
       })
       .catch((error) => {
         console.error('Error deleting bus:', error);
@@ -218,7 +192,6 @@ export class ManageBusesComponent {
     const lowerDeckSeats = [];
     const upperDeckSeats = [];
 
-    // Create 20 seater seats for lower deck
     for (let i = 0; i <= 9; i++) {
       if ((i + 1 * (i + 1)) % 2 != 0) {
         lowerDeckSeats.push({
@@ -340,14 +313,6 @@ export class ManageBusesComponent {
     };
 
     // Update the seat layout in the Firebase Realtime Database
-    this.database
-      .object(`/Seats/${busNo}`)
-      .set(seatLayout)
-      .then(() => {
-        console.log('Seat layout created successfully for bus:', busNo);
-      })
-      .catch((error) => {
-        console.error('Error creating seat layout:', error);
-      });
+    this.database.object(`/Seats/${busNo}`).set(seatLayout);
   }
 }

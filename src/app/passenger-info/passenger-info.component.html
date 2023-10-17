@@ -35,7 +35,7 @@
               "
               class="text-danger"
             >
-              Name is required.
+              Name is required
             </div>
             <div
               *ngIf="
@@ -44,7 +44,7 @@
               "
               class="text-danger"
             >
-              Name must be at least 3 characters long.
+              Name must be at least 3 characters long
             </div>
             <div
               *ngIf="
@@ -53,7 +53,7 @@
               "
               class="text-danger"
             >
-              Name can only contain letters and spaces.
+              Name can only contain letters and spaces
             </div>
           </div>
 
@@ -75,7 +75,7 @@
               "
               class="text-danger"
             >
-              Age is required.
+              Age is required
             </div>
             <div
               *ngIf="
@@ -84,7 +84,16 @@
               "
               class="text-danger"
             >
-              Age must be at least 5.
+              Age must be between 5 and 125
+            </div>
+            <div
+              *ngIf="
+                formGroup.get('age')?.hasError('max') &&
+                formGroup.get('age')?.touched
+              "
+              class="text-danger"
+            >
+              Age must be between 5 and 125
             </div>
           </div>
 
@@ -113,7 +122,7 @@
               "
               class="text-danger"
             >
-              Gender is required.
+              Gender is required
             </div>
           </div>
         </div>

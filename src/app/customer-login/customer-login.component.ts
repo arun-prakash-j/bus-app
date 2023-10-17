@@ -1,5 +1,3 @@
-// import { Component, OnInit } from '@angular/core';
-// import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -14,6 +12,9 @@ export class CustomerLoginComponent implements OnInit {
   isSignedIn = false;
   isSignUp = false;
 
+  show = false;
+  mailExist = false;
+
   loginForm: FormGroup = this.fb.group({
     email: ['', [Validators.required, Validators.email]],
     password: [
@@ -21,7 +22,7 @@ export class CustomerLoginComponent implements OnInit {
       [
         Validators.required,
         Validators.pattern(
-          /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
+          /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$#!%*?&])[A-Za-z\d@$#!%*?&]{8,}$/
         ),
       ],
     ],
@@ -34,7 +35,7 @@ export class CustomerLoginComponent implements OnInit {
       [
         Validators.required,
         Validators.pattern(
-          /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
+          /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$#!%*?&])[A-Za-z\d@$#!%*?&]{8,}$/
         ),
       ],
     ],
@@ -64,15 +65,20 @@ export class CustomerLoginComponent implements OnInit {
 
   async onSignup() {
     const { email, password } = this.signupForm.value;
-
-    await this.firebaseService.signup(email, password);
-    if (this.firebaseService.isSignedUp) {
+    try {
+      await this.firebaseService.signup(email, password);
       this.signupForm.reset();
+      this.show = true;
       this.isSignUp = !this.isSignUp;
+    } catch (error: any) {
+      if (error.code === 'auth/email-already-in-use') {
+        this.mailExist = !this.mailExist;
+      }
     }
   }
 
   toggleSignMode() {
+    this.show = false;
     this.isSignUp = !this.isSignUp;
     this.loginForm.reset();
     this.signupForm.reset();

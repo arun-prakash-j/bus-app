@@ -25,4 +25,7 @@ label {
   font-weight: bold;
 }
 
-/* Add more custom styles as needed */
+.toast {
+  background-color: antiquewhite;
+  font-weight: bold;
+}

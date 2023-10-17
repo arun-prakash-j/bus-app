@@ -29,6 +29,10 @@ import { ErrorPageComponent } from './error-page/error-page.component';
 
 import { ViewBookingsComponent } from './view-bookings/view-bookings.component';
 import { ManageBusesComponent } from './manage-buses/manage-buses.component';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
 
 @NgModule({
   declarations: [
@@ -69,6 +73,10 @@ import { ManageBusesComponent } from './manage-buses/manage-buses.component';
     }),
     provideDatabase(() => getDatabase()),
     BrowserAnimationsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    MatIconModule,
   ],
   providers: [FirebaseService],
   bootstrap: [AppComponent],

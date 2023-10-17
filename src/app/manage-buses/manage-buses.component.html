@@ -1,10 +1,11 @@
-<button class="btn btn-primary mb-4" (click)="backToAdminInterface()">
-  Back
-</button>
-
-<button class="btn btn-success mb-4" (click)="showAddForm = true">
-  Add Bus
-</button>
+<div class="buttons">
+  <button class="btn btn-primary mb-4" (click)="backToAdminInterface()">
+    Back
+  </button>
+  <button class="btn btn-success mb-4" (click)="showAddForm = true">
+    Add Bus
+  </button>
+</div>
 
 <div *ngIf="buses.length === 0; else busList">
   <p class="text-center">Currently there are no buses available.</p>
@@ -51,12 +52,14 @@
             </p>
           </div>
         </div>
-        <button class="btn btn-primary mt-3" (click)="showEdit(bus)">
-          Edit
-        </button>
-        <button class="btn btn-danger mt-3" (click)="showDelete(bus)">
-          Delete
-        </button>
+        <div class="buttons">
+          <button class="btn btn-primary mt-3" (click)="showEdit(bus)">
+            Edit
+          </button>
+          <button class="btn btn-danger mt-3" (click)="showDelete(bus)">
+            Delete
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -87,11 +90,12 @@
           required
         />
       </div>
-
-      <button type="submit" class="btn btn-primary">Save Changes</button>
-      <button type="button" class="btn btn-secondary" (click)="cancelEdit()">
-        Cancel
-      </button>
+      <div class="buttons mt-3">
+        <button type="submit" class="btn btn-primary">Save Changes</button>
+        <button type="button" class="btn btn-secondary" (click)="cancelEdit()">
+          Cancel
+        </button>
+      </div>
     </form>
   </div>
 </div>
@@ -190,11 +194,12 @@
           required
         />
       </div>
-
-      <button type="submit" class="btn btn-primary">Add Bus</button>
-      <button type="button" class="btn btn-secondary" (click)="cancelAdd()">
-        Cancel
-      </button>
+      <div class="buttons mt-3 dflex">
+        <button type="submit" class="btn btn-primary">Add Bus</button>
+        <button type="button" class="btn btn-secondary" (click)="cancelAdd()">
+          Cancel
+        </button>
+      </div>
     </form>
   </div>
 </div>
@@ -205,9 +210,13 @@
     <p>
       Are you sure to continue?
       <br />
-      Note: Once you press YES, you cannot edit the data you entered.
+      Note: Once you press YES, this bus will be deleted permanently.
     </p>
-    <button class="btn btn-danger" (click)="deleteBus(busToDelete)">Yes</button>
-    <button class="btn btn-primary" (click)="cancelDelete()">No</button>
+    <div class="buttons">
+      <button class="btn btn-danger" (click)="deleteBus(busToDelete)">
+        Yes
+      </button>
+      <button class="btn btn-primary" (click)="cancelDelete()">No</button>
+    </div>
   </div>
 </div>
