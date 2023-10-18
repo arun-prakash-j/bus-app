@@ -56,10 +56,28 @@ export class CustomerLoginComponent implements OnInit {
   async onSignin() {
     const { email, password } = this.loginForm.value;
 
-    await this.firebaseService.signin(email, password);
-    if (this.isSignedIn) {
-      this.loginForm.reset();
-      this.router.navigate(['/buses']);
+    // await this.firebaseService.signin(email, password);
+    // if (this.isSignedIn) {
+    //   this.loginForm.reset();
+    //   this.router.navigate(['/buses']);
+    // }
+
+    try {
+      await this.firebaseService.signin(email, password);
+      if (this.isSignedIn) {
+        this.loginForm.reset();
+        this.router.navigate(['/buses']);
+      }
+    } catch (error: any) {
+      if (error.code === 'auth/invalid-login-credentials') {
+        console.error('Firebase error:', error);
+        console.error('Firebase error code:', error.code);
+        console.error('Firebase error message:', error.message);
+        console.log('Email: ' + email);
+        console.log('Password: ' + password);
+alert("Invalid Credentials")
+        this.mailExist = !this.mailExist;
+      }
     }
   }
 

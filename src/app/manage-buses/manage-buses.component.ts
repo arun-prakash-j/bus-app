@@ -51,7 +51,7 @@ export class ManageBusesComponent {
       typeof bus['ArriveTime'] === 'string' &&
       typeof bus['DepartTime'] === 'string' &&
       typeof bus['From'] === 'string' &&
-      typeof bus['To'] === 'string' 
+      typeof bus['To'] === 'string'
       // &&
       // typeof bus['MinPrice'] === 'number' &&
       // typeof bus['SeatsLeft'] === 'number' &&
@@ -185,7 +185,6 @@ export class ManageBusesComponent {
 
   createSeatLayout(busNo: string) {
     if (!busNo) {
-      console.error('Invalid busNo for seat layout creation');
       return;
     }
 
@@ -312,7 +311,6 @@ export class ManageBusesComponent {
       upperDeck: upperDeckSeats,
     };
 
-    // Update the seat layout in the Firebase Realtime Database
     this.database.object(`/Seats/${busNo}`).set(seatLayout);
   }
 }
