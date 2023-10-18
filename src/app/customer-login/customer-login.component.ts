@@ -16,26 +16,38 @@ export class CustomerLoginComponent implements OnInit {
   mailExist = false;
 
   loginForm: FormGroup = this.fb.group({
-    email: ['', [Validators.required, Validators.email]],
+    email: [
+      '',
+      [
+        Validators.required,
+        Validators.pattern(/^[a-z0-9._%+-]+@[a-z0-9]+\.[a-z]{2,4}$/),
+      ],
+    ],
     password: [
       '',
       [
         Validators.required,
         Validators.pattern(
-          /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$#!%*?&])[A-Za-z\d@$#!%*?&]{8,}$/
+          /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$#!%*?&])[A-Za-z\d@$#!%*?&]{8,20}$/
         ),
       ],
     ],
   });
 
   signupForm: FormGroup = this.fb.group({
-    email: ['', [Validators.required, Validators.email]],
+    email: [
+      '',
+      [
+        Validators.required,
+        Validators.pattern(/^[a-z0-9._%+-]+@[a-z0-9]+\.[a-z]{2,4}$/),
+      ],
+    ],
     password: [
       '',
       [
         Validators.required,
         Validators.pattern(
-          /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$#!%*?&])[A-Za-z\d@$#!%*?&]{8,}$/
+          /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$#!%*?&])[A-Za-z\d@$#!%*?&]{8,20}$/
         ),
       ],
     ],
@@ -56,32 +68,23 @@ export class CustomerLoginComponent implements OnInit {
   async onSignin() {
     const { email, password } = this.loginForm.value;
 
-    // await this.firebaseService.signin(email, password);
-    // if (this.isSignedIn) {
-    //   this.loginForm.reset();
-    //   this.router.navigate(['/buses']);
-    // }
-
     try {
       await this.firebaseService.signin(email, password);
       if (this.isSignedIn) {
         this.loginForm.reset();
         this.router.navigate(['/buses']);
-      }}
-//     } catch (error: any) {
-//       if (error.code === 'auth/invalid-login-credentials') {
-//         console.error('Firebase error:', error);
-//         console.error('Firebase error code:', error.code);
-//         console.error('Firebase error message:', error.message);
-//         console.log('Email: ' + email);
-//         console.log('Password: ' + password);
-// alert("Invalid Credentials")
-//         this.mailExist = !this.mailExist;
-//       }
-//     }
-    catch  (e:any) {
-      alert('Failed with error code: ${e.code}');
-      alert(e.message);}
+      }
+    } catch (error: any) {
+      if (error.code === 'auth/invalid-login-credentials') {
+        console.error('Firebase error:', error);
+        console.error('Firebase error code:', error.code);
+        console.error('Firebase error message:', error.message);
+        console.log('Email: ' + email);
+        console.log('Password: ' + password);
+        alert('Invalid Credentials');
+        this.mailExist = !this.mailExist;
+      }
+    }
   }
 
   async onSignup() {

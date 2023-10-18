@@ -23,7 +23,7 @@
               />
             </div>
             <div
-              *ngIf="loginForm.get('email')?.hasError('email')"
+              *ngIf="loginForm.get('email')?.hasError('pattern')"
               class="text-danger"
             >
               Invalid Email Id
