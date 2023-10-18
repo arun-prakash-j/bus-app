@@ -18,7 +18,6 @@ export class ViewBookingsComponent {
   seatNo: number = 0;
 
   ngOnInit(): void {
-    // Fetch bus IDs from the database
     this.db
       .list('/Seats')
       .query.once('value')
@@ -26,7 +25,6 @@ export class ViewBookingsComponent {
         snapshot.forEach((childSnapshot) => {
           const busId = childSnapshot.key;
           if (busId) {
-            // Fetch booked seats data for each bus
             this.db
               .list(`/Seats/${busId}/lowerDeck`, (ref) =>
                 ref.orderByChild('isBooked').equalTo(true)
@@ -71,16 +69,18 @@ export class ViewBookingsComponent {
     const seatRef = this.db.object(
       `/Seats/${busId}/${deck + 'Deck'}/${this.seatNo}`
     );
+
     seatRef.update({
       isBooked: false,
       gender: '',
       passengerName: '',
       passengerAge: 0,
-    }); // Set isBooked to false in the database
+    });
 
-    // Update the local data to reflect the change
-    this.bookedSeatsByBus[busId] = this.bookedSeatsByBus[busId].filter(
+    const updatedSeats = this.bookedSeatsByBus[busId].filter(
       (seat: any) => seat.id !== seatId
     );
+
+    this.bookedSeatsByBus[busId] = updatedSeats;
   }
 }

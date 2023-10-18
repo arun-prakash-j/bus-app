@@ -67,18 +67,21 @@ export class CustomerLoginComponent implements OnInit {
       if (this.isSignedIn) {
         this.loginForm.reset();
         this.router.navigate(['/buses']);
-      }
-    } catch (error: any) {
-      if (error.code === 'auth/invalid-login-credentials') {
-        console.error('Firebase error:', error);
-        console.error('Firebase error code:', error.code);
-        console.error('Firebase error message:', error.message);
-        console.log('Email: ' + email);
-        console.log('Password: ' + password);
-alert("Invalid Credentials")
-        this.mailExist = !this.mailExist;
-      }
-    }
+      }}
+//     } catch (error: any) {
+//       if (error.code === 'auth/invalid-login-credentials') {
+//         console.error('Firebase error:', error);
+//         console.error('Firebase error code:', error.code);
+//         console.error('Firebase error message:', error.message);
+//         console.log('Email: ' + email);
+//         console.log('Password: ' + password);
+// alert("Invalid Credentials")
+//         this.mailExist = !this.mailExist;
+//       }
+//     }
+    catch  (e:any) {
+      alert('Failed with error code: ${e.code}');
+      alert(e.message);}
   }
 
   async onSignup() {
