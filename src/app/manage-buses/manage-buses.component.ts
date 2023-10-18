@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { AngularFireDatabase } from '@angular/fire/compat/database';
 import { Router } from '@angular/router';
-import { map } from 'rxjs';
 
 @Component({
   selector: 'app-manage-buses',

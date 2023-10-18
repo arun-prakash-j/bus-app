@@ -29,3 +29,14 @@ label {
   background-color: antiquewhite;
   font-weight: bold;
 }
+
+.input-group {
+  position: relative;
+}
+
+.input-group button {
+  position: absolute;
+  right: 0px; 
+  top: 27px; 
+  transform: translateY(-50%);
+}

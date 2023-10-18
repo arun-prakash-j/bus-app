@@ -31,13 +31,31 @@
 
             <div class="form-group mt-2">
               <label for="password">Password</label>
-              <input
+              <!-- <input
                 type="password"
                 class="form-control mt-2"
                 id="password"
                 formControlName="password"
                 placeholder="Enter your password"
-              />
+              /> -->
+              <div class="input-group">
+                <input
+                  type="{{ isPasswordVisible ? 'text' : 'password' }}"
+                  class="form-control mt-2"
+                  id="password"
+                  formControlName="password"
+                  placeholder="Enter your password"
+                />
+                <div class="input-group-append">
+                  <button
+                    class="btn btn-outline-secondary"
+                    type="button"
+                    (click)="togglePasswordVisibility()"
+                  >
+                    {{ isPasswordVisible ? "Hide" : "Show" }}
+                  </button>
+                </div>
+              </div>
             </div>
             <div
               *ngIf="loginForm.get('password')?.hasError('pattern')"
@@ -72,7 +90,7 @@
             </div>
 
             <div
-              *ngIf="signupForm.get('email')?.hasError('email')"
+              *ngIf="signupForm.get('email')?.hasError('pattern')"
               class="text-danger"
             >
               Invalid Email format
@@ -122,7 +140,12 @@
 
 <div class="container mt-4">
   <div class="row justify-content-center">
-    <ngb-toast *ngIf="show" [delay]="3000" (hide)="show = false" class="toast">
+    <ngb-toast
+      *ngIf="showToast"
+      [delay]="3000"
+      (hide)="showToast = false"
+      class="toast"
+    >
       Account registered successfully!!!
     </ngb-toast>
   </div>
@@ -131,7 +154,7 @@
     <ngb-toast
       *ngIf="mailExist"
       [delay]="3000"
-      (hide)="show = false"
+      (hide)="mailExist = false"
       class="toast"
     >
       Email Id already exist!!!

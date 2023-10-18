@@ -12,8 +12,9 @@ export class CustomerLoginComponent implements OnInit {
   isSignedIn = false;
   isSignUp = false;
 
-  show = false;
+  showToast = false;
   mailExist = false;
+  isPasswordVisible = false;
 
   loginForm: FormGroup = this.fb.group({
     email: [
@@ -92,7 +93,7 @@ export class CustomerLoginComponent implements OnInit {
     try {
       await this.firebaseService.signup(email, password);
       this.signupForm.reset();
-      this.show = true;
+      this.showToast = true;
       this.isSignUp = !this.isSignUp;
     } catch (error: any) {
       if (error.code === 'auth/email-already-in-use') {
@@ -102,9 +103,13 @@ export class CustomerLoginComponent implements OnInit {
   }
 
   toggleSignMode() {
-    this.show = false;
+    this.showToast = false;
     this.isSignUp = !this.isSignUp;
     this.loginForm.reset();
     this.signupForm.reset();
+  }
+
+  togglePasswordVisibility() {
+    this.isPasswordVisible = !this.isPasswordVisible;
   }
 }
