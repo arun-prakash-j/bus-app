@@ -1,0 +1,267 @@
+<div class="buttons">
+  <button class="btn btn-primary mb-4" (click)="backToAdminInterface()">
+    Back
+  </button>
+  <button class="btn btn-success mb-4" (click)="showAddForm = true">
+    Add Bus
+  </button>
+</div>
+
+<div *ngIf="buses.length === 0; else busList">
+  <p class="text-center">Currently there are no buses available.</p>
+</div>
+
+<ng-template #busList>
+  <div class="container mt-2">
+    <h2>Available Buses</h2>
+    <div *ngFor="let bus of buses" class="card mb-3">
+      <div class="card-body">
+        <div class="row mt-2">
+          <div class="col-md-4">
+            <h5 class="card-title card-title-bus">
+              <i class="fas fa-bus"></i> Bus Details
+            </h5>
+            <p class="card-text mt-3">
+              <b class="heading"> Bus Number: </b> {{ bus?.busNo }}
+            </p>
+            <p class="card-text">
+              <b class="heading"> Bus Type: </b> {{ bus?.type }}
+            </p>
+          </div>
+          <div class="col-md-4">
+            <h5 class="card-title card-title-time">
+              <i class="far fa-clock"></i> Arrival & Departure
+            </h5>
+            <p class="card-text mt-3">
+              <b class="heading">Departure Time:</b>
+              {{ formatCustomTime(bus?.departTime) }}
+            </p>
+            <p class="card-text">
+              <b class="heading">Arrival Time:</b>
+              {{ formatCustomTime(bus?.arriveTime) }}
+            </p>
+          </div>
+          <div class="col-md-4">
+            <h5 class="card-title card-title-route">
+              <i class="fas fa-map-marker-alt"></i> Route Details
+            </h5>
+            <p class="card-text mt-3">
+              <b class="heading">From:</b> {{ bus?.from }}
+            </p>
+            <p class="card-text"><b class="heading">To:</b> {{ bus?.to }}</p>
+          </div>
+        </div>
+        <div class="buttons mt-3">
+          <button class="btn btn-primary" (click)="showEdit(bus)">Edit</button>
+          <button class="btn btn-danger" (click)="showDelete(bus)">
+            Delete
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<!-- Edit Bus Pop Up -->
+<div *ngIf="showEditForm" class="confirmation-dialog">
+  <div class="confirmation-content">
+    <h4>Edit Bus Details</h4>
+    <form (ngSubmit)="saveChanges()" [formGroup]="editForm">
+      <div class="form-group mt-3">
+        <label for="departTime">Departure Time:</label>
+        <ngb-timepicker
+          class="form-control"
+          formControlName="departTime"
+          [meridian]="true"
+          [spinners]="false"
+        ></ngb-timepicker>
+        <div
+          *ngIf="
+            editForm.get('departTime')?.hasError('required') &&
+            editForm.get('departTime')?.touched
+          "
+          class="text-danger"
+        >
+          Departure Time is Required
+        </div>
+      </div>
+      <div class="form-group mt-3">
+        <label for="arriveTime">Arrival Time:</label>
+        <ngb-timepicker
+          class="form-control"
+          formControlName="arriveTime"
+          [meridian]="true"
+          [spinners]="false"
+        ></ngb-timepicker>
+
+        <div
+          *ngIf="
+            editForm.get('arriveTime')?.hasError('required') &&
+            editForm.get('arriveTime')?.touched
+          "
+          class="text-danger"
+        >
+          Arrival Time is Required
+        </div>
+      </div>
+
+      <div class="buttons mt-3">
+        <button type="submit" class="btn btn-primary">Save Changes</button>
+        <button type="button" class="btn btn-secondary" (click)="cancelEdit()">
+          Cancel
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Add Bus Pop Up -->
+<div *ngIf="showAddForm" class="confirmation-dialog">
+  <div class="confirmation-content">
+    <h4>Add Bus</h4>
+    <div class="scrollable-content">
+      <form (ngSubmit)="addBus()" [formGroup]="busForm">
+        <div class="form-group mt-3">
+          <label for="busNo">Bus Number:</label>
+          <input
+            type="text"
+            class="form-control"
+            id="busNo"
+            formControlName="busNo"
+            placeholder="eg. TN 00 AB 0123"
+          />
+        </div>
+        <div
+          *ngIf="
+            busForm.get('busNo')?.hasError('required') &&
+            busForm.get('busNo')?.touched
+          "
+          class="text-danger"
+        >
+          Bus Number is Required
+        </div>
+
+        <div class="form-group mt-3">
+          <label for="type">Bus Type:</label>
+
+          <select
+            class="form-select form-select-sm"
+            id="type"
+            formControlName="type"
+          >
+            <option value="" disabled selected>Select Bus Type</option>
+            <option value="AC Seater/Sleeper 1+2">AC Seater/Sleeper 1+2</option>
+          </select>
+
+          <div
+            *ngIf="
+              busForm.get('type')?.hasError('required') &&
+              busForm.get('type')?.touched
+            "
+            class="text-danger"
+          >
+            Bus Type is Required
+          </div>
+        </div>
+
+        <div class="form-group mt-3">
+          <label for="departTime">Departure Time:</label>
+          <ngb-timepicker
+            formControlName="departTime"
+            [meridian]="true"
+            [spinners]="false"
+          ></ngb-timepicker>
+          <div
+            *ngIf="
+              busForm.get('departTime')?.hasError('required') &&
+              busForm.get('departTime')?.touched
+            "
+            class="text-danger"
+          >
+            Departure Time is Required
+          </div>
+        </div>
+        <div class="form-group mt-3">
+          <label for="arriveTime">Arrival Time:</label>
+          <ngb-timepicker
+            formControlName="arriveTime"
+            [meridian]="true"
+            [spinners]="false"
+          ></ngb-timepicker>
+
+          <div
+            *ngIf="
+              busForm.get('arriveTime')?.hasError('required') &&
+              busForm.get('arriveTime')?.touched
+            "
+            class="text-danger"
+          >
+            Arrival Time is Required
+          </div>
+        </div>
+        <div class="form-group mt-3">
+          <label for="from">From:</label>
+          <input
+            type="text"
+            class="form-control"
+            id="from"
+            formControlName="from"
+            placeholder="eg. Chennai"
+          />
+          <div
+            *ngIf="
+              busForm.get('from')?.hasError('required') &&
+              busForm.get('from')?.touched
+            "
+            class="text-danger"
+          >
+            From (Source) is Required
+          </div>
+        </div>
+        <div class="form-group mt-3">
+          <label for="to">To:</label>
+          <input
+            type="text"
+            class="form-control"
+            id="to"
+            formControlName="to"
+            placeholder="eg. Trichy"
+          />
+          <div
+            *ngIf="
+              busForm.get('to')?.hasError('required') &&
+              busForm.get('to')?.touched
+            "
+            class="text-danger"
+          >
+            To (Destination) is Required
+          </div>
+        </div>
+
+        <div class="buttons mt-3 dflex">
+          <button type="submit" class="btn btn-primary">Add Bus</button>
+          <button type="button" class="btn btn-secondary" (click)="cancelAdd()">
+            Cancel
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Delete Bus Pop Up -->
+<div *ngIf="showDeletePopUp" class="confirmation-dialog">
+  <div class="confirmation-content">
+    <p>
+      Are you sure to continue?
+      <br />
+      Note: Once you press YES, this bus will be deleted permanently.
+    </p>
+    <div class="buttons">
+      <button class="btn btn-danger" (click)="deleteBus(busToDelete)">
+        Yes
+      </button>
+      <button class="btn btn-primary" (click)="cancelDelete()">No</button>
+    </div>
+  </div>
+</div>

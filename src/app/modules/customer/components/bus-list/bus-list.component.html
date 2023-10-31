@@ -1,0 +1,45 @@
+<div class="container mt-5">
+  <h2>Available Buses</h2>
+  <div *ngFor="let bus of buses" class="card mb-3">
+    <div class="card-body">
+      <div class="row mt-2">
+        <div class="col-md-4">
+          <h5 class="card-title card-title-bus">
+            <i class="fas fa-bus"></i> Bus Details
+          </h5>
+          <p class="card-text mt-3">
+            <b class="heading"> Bus Number: </b> {{ bus?.busNo }}
+          </p>
+          <p class="card-text">
+            <b class="heading"> Bus Type: </b> {{ bus?.type }}
+          </p>
+        </div>
+        <div class="col-md-4">
+          <h5 class="card-title card-title-time">
+            <i class="far fa-clock"></i> Arrival & Departure
+          </h5>
+          <p class="card-text mt-3">
+            <b class="heading">Departure Time:</b>
+            {{ formatCustomTime(bus?.departTime) }}
+          </p>
+          <p class="card-text">
+            <b class="heading">Arrival Time:</b>
+            {{ formatCustomTime(bus?.arriveTime) }}
+          </p>
+        </div>
+        <div class="col-md-4">
+          <h5 class="card-title card-title-route">
+            <i class="fas fa-map-marker-alt"></i> Route Details
+          </h5>
+          <p class="card-text mt-3">
+            <b class="heading">From:</b> {{ bus?.from }}
+          </p>
+          <p class="card-text"><b class="heading">To:</b> {{ bus?.to }}</p>
+        </div>
+      </div>
+      <button class="btn btn-success mt-4" (click)="viewSeats(bus.busNo)">
+        View Seats
+      </button>
+    </div>
+  </div>
+</div>

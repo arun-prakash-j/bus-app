@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { Router } from '@angular/router';
-import { FirebaseService } from './services/firebase.service';
+import { FirebaseService } from './core/services/firebase.service';
 
 @Component({
   selector: 'app-root',
@@ -18,8 +18,14 @@ export class AppComponent {
 
   isLoginPage(): boolean {
     return (
-      this.router.url === '/customer-login' ||
-      this.router.url === '/admin-login'
+      this.router.url === '/customer/customer-login' ||
+      this.router.url === '/admin/admin-login'
+    );
+  }
+
+  isErrorPage(): boolean {
+    return (
+      this.router.url === '/error-page' 
     );
   }
 

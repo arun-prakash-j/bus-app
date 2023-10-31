@@ -1,5 +1,6 @@
 export const environment = {
-  firebase: {
+  production: false,
+  firebaseConfig: {
     projectId: 'busticketbooking-faf5d',
     appId: '1:240996895446:web:eff140344c8b1e1dca5777',
     databaseURL: 'https://busticketbooking-faf5d-default-rtdb.firebaseio.com',

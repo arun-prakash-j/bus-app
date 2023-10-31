@@ -9,7 +9,7 @@
       <li class="nav-item">
         <a
           class="nav-link"
-          [routerLink]="['/customer-login']"
+          [routerLink]="['/customer/customer-login']"
           *ngIf="isLoginPage()"
           >Customer</a
         >
@@ -17,17 +17,16 @@
       <li class="nav-item">
         <a
           class="nav-link"
-          [routerLink]="['/admin-login']"
+          [routerLink]="['/admin/admin-login']"
           *ngIf="isLoginPage()"
           >Admin</a
         >
       </li>
-      <li class="nav-item">
+      <li class="nav-item" *ngIf="!isErrorPage() && !isLoginPage()">
         <a
           class="nav-link"
           (click)="logout()"
-          [routerLink]="['/customer-login']"
-          *ngIf="!isLoginPage()"
+          [routerLink]="['/customer/customer-login']"
           >Logout</a
         >
       </li>

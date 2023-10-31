@@ -1,0 +1,150 @@
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-header">
+          {{ isSignUp ? "Customer Sign Up" : "Customer Sign In" }}
+        </div>
+        <div class="card-body">
+          <form
+            *ngIf="!isSignUp"
+            [formGroup]="loginForm"
+            (ngSubmit)="onSignin()"
+          >
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input
+                type="email"
+                class="form-control mt-2"
+                id="email"
+                formControlName="email"
+                placeholder="Enter your email"
+              />
+            </div>
+            <div
+              *ngIf="loginForm.get('email')?.hasError('pattern')"
+              class="text-danger"
+            >
+              Invalid Email Id
+            </div>
+
+            <div class="form-group mt-2">
+              <label for="password">Password</label>
+              <div class="input-group">
+                <input
+                  type="{{ isPasswordVisible ? 'text' : 'password' }}"
+                  class="form-control mt-2"
+                  id="password"
+                  formControlName="password"
+                  placeholder="Enter your password"
+                />
+                <div class="input-group-append">
+                  <button
+                    class="btn btn-outline-secondary"
+                    type="button"
+                    (click)="togglePasswordVisibility()"
+                  >
+                    {{ isPasswordVisible ? "Hide" : "Show" }}
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div
+              *ngIf="loginForm.get('password')?.hasError('pattern')"
+              class="text-danger mb-2"
+            >
+              Wrong Password
+            </div>
+            <button
+              type="submit"
+              class="btn btn-primary"
+              [disabled]="!loginForm.valid"
+            >
+              Login
+            </button>
+          </form>
+
+          <form
+            *ngIf="isSignUp"
+            [formGroup]="signupForm"
+            (ngSubmit)="onSignup()"
+          >
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input
+                type="email"
+                class="form-control mt-2"
+                id="email"
+                formControlName="email"
+                placeholder="Enter your email"
+              />
+            </div>
+            <div
+              *ngIf="signupForm.get('email')?.hasError('pattern')"
+              class="text-danger"
+            >
+              Invalid Email format
+            </div>
+
+            <div class="form-group mt-2">
+              <label for="password">Password</label>
+              <input
+                type="password"
+                class="form-control mt-2"
+                id="password"
+                formControlName="password"
+                placeholder="Enter your password"
+              />
+            </div>
+            <div
+              *ngIf="signupForm.get('password')?.hasError('pattern')"
+              class="text-danger"
+            >
+              Password must contain at least:
+              <ul>
+                <li>1 Uppercase Letter</li>
+                <li>1 Lowercase Letter</li>
+                <li>1 Special Character</li>
+                <li>1 Numeric Character</li>
+                <li>Minimum 8 Characters Long</li>
+              </ul>
+            </div>
+            <button
+              type="submit"
+              class="btn btn-primary"
+              [disabled]="!signupForm.valid"
+            >
+              Sign Up
+            </button>
+          </form>
+
+          <button class="btn btn-secondary mt-3" (click)="toggleSignMode()">
+            {{ isSignUp ? "Switch to Sign In" : "Switch to Sign Up" }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container mt-4">
+  <div class="row justify-content-center">
+    <ngb-toast
+      *ngIf="showToast"
+      [delay]="3000"
+      (hide)="showToast = false"
+      class="toast"
+      >Account registered successfully!!!</ngb-toast
+    >
+  </div>
+
+  <div class="row justify-content-center">
+    <ngb-toast
+      *ngIf="mailExist"
+      [delay]="3000"
+      (hide)="mailExist = false"
+      class="toast"
+      >Email Id already exists!!!</ngb-toast
+    >
+  </div>
+</div>
